@@ -9,3 +9,8 @@ htmlcov/
 .preview-t7/
 .wip-t4/
 .trash/
+.tmp/
+
+# 项目规划内容只留本地，不推送（用户 2026-11-18 规则）
+SPEC.md
+tasks/

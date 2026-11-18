@@ -25,12 +25,6 @@ python -m openmind run --date 2026-11-19 # 生成一期
 python -m http.server 8000 --directory site/
 ```
 
-需要外网时可使用本地代理：
-
-```powershell
-$env:http_proxy="http://127.0.0.1:1081"; $env:https_proxy="http://127.0.0.1:1081"
-```
-
 ### CLI
 
 | 命令 | 说明 |
@@ -65,5 +59,3 @@ $env:http_proxy="http://127.0.0.1:1081"; $env:https_proxy="http://127.0.0.1:1081
 pytest tests/ -q
 ruff check src/ tests/
 ```
-
-设计依据：`SPEC.md`；任务分解：`tasks/plan.md` / `tasks/todo.md`。
