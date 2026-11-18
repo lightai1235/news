@@ -86,6 +86,24 @@ class TestScore:
         assert scored[0].score is not None
         assert scored[0].reason
 
+    def test_zero_relevance_rejected_even_if_authoritative(self, comp):
+        # 2026-11-18 冒烟发现：HN 权威域名 + 零相关帖（VC/AI 话题）混进文学词条。
+        # 相关度为 0 一票否决，权威加分不能救回完全无关内容。
+        cs = [
+            cand(
+                "https://news.ycombinator.com/item?id=1",
+                title="Dealing with VCs, my experience",
+                kind="discussion",
+                source="hn",
+            ),
+            cand("https://arxiv.org/abs/1", title="Bioacoustics methods", kind="paper"),
+        ]
+        scored, rejected = score_candidates(
+            cs, "Literary realism", comp, fetch_text=lambda u: "unrelated body text"
+        )
+        assert all("ycombinator" not in c.url for c in scored)
+        assert any("相关" in r["reason"] for r in rejected)
+
     def test_low_score_filtered(self, comp):
         cs = [cand("https://unknown.example/x", title="完全无关的标题")]
         scored, _ = score_candidates(cs, "Bioacoustics", comp, fetch_text=lambda u: "")

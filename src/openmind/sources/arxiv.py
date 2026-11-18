@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ET
 import httpx
 
 from openmind.sources.base import Candidate, Query
-from openmind.sources.http_util import TIMEOUT, UA
+from openmind.sources.http_util import TIMEOUT, UA, RateLimiter
 
 log = logging.getLogger(__name__)
 
@@ -17,6 +17,8 @@ ARXIV_API = "https://export.arxiv.org/api/query"
 _ATOM = "{http://www.w3.org/2005/Atom}"
 _ARXIV = "{http://arxiv.org/schemas/atom}"
 MAX_RESULTS = 10
+# arXiv 官方礼仪：请求间隔 ≥3s；并发 discover 下共享限速防 429（2026-11-18 冒烟实测触发）
+_LIMITER = RateLimiter(min_interval=3.0)
 
 
 class ArxivSource:
@@ -25,6 +27,7 @@ class ArxivSource:
 
     def search(self, query: Query) -> list[Candidate]:
         try:
+            _LIMITER.acquire()
             resp = httpx.get(
                 ARXIV_API,
                 params={
