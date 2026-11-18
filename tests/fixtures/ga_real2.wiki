@@ -1,0 +1,44 @@
+<noinclude>
+{{Wikipedia:Good article nominations/Tab header}}
+<div class="mw-collapsible mw-collapsed">
+{{Wikipedia:Good articles/header|shortcuts={{shortcut|WP:GA/ALL}}}}
+</div></noinclude><templatestyles src="Wikipedia:Good articles/styles.css"/>
+__NOTOC__
+__NOEDITSECTION__
+<div class="wp-ga-topic">
+==GA==
+<div class="wp-ga-topic-contents">
+===Contents===
+<!--Changes to the "Contents" section (including the section title) may impact the following bots:
+      * User:FACBot, User:GreenC bot, User:LivingBot
+    Please notify them of changes to the layout/style of this section.-->
+(Split between [[Wikipedia:Good articles/all#GA|page 1]] and page 2 due to size)
+{{plainlist}}
+* [[Wikipedia:Good articles/all#Agriculture, food and drink|Agriculture, food and drink]]
+* [[Wikipedia:Good articles/all#Art and architecture|Art and architecture]]
+* [[Wikipedia:Good articles/all#Engineering and technology|Engineering and technology]]
+* [[Wikipedia:Good articles/all#Geography and places|Geography and places]]
+* [[Wikipedia:Good articles/all#History|History]]
+* [[Wikipedia:Good articles/all#Language and literature|Language and literature]]
+* [[Wikipedia:Good articles/all#Mathematics|Mathematics]]
+* [[Wikipedia:Good articles/all#Media and drama|Media and drama]]
+* [[Wikipedia:Good articles/all#Music|Music]]
+* [[#Natural sciences|Natural sciences]]
+* [[#Philosophy and religion|Philosophy and religion]]
+* [[#Social sciences and society|Social sciences and society]]
+* [[#Sports and recreation|Sports and recreation]]
+* [[#Video games|Video games]]
+* [[#Warfare|Warfare]]
+{{endplainlist}}
+</div>
+</div>
+{{Wikipedia:Good articles/Natural sciences}}
+{{Wikipedia:Good articles/Philosophy and religion}}
+{{Wikipedia:Good articles/Social sciences and society}}
+{{Wikipedia:Good articles/Sports and recreation}}
+{{Wikipedia:Good articles/Video games}}
+{{Wikipedia:Good articles/Warfare}}
+<noinclude>
+===Back===
+<div class="wp-ga-topic-back">[[#GA|back]]</div>
+</noinclude>

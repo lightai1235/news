@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}拓界 · {{ issue.date }}{% endblock %}
+{% block content %}
+<p class="issue-date">{{ issue.date }} · 今日词条</p>
+{% for card in cards %}
+<article class="card">
+  <h2><a href="{{ card.brief.wiki_url }}">{{ card.brief.zh_title or card.brief.title }}</a><span class="domain-tag">{{ card.brief.domain }}</span></h2>
+  {% if card.brief.zh_title and card.brief.zh_title != card.brief.title %}
+  <p class="zh-title">{{ card.brief.title }}</p>
+  {% endif %}
+  <p class="brief">{{ card.brief.brief }}{% if card.brief.zh_absent %} <span class="zh-absent">（暂无中文摘要）</span>{% endif %}</p>
+  {% if card["items"] %}
+  <ul class="items">
+    {% for it in card["items"] %}
+    <li><span class="badge {{ it.kind }}">{{ kind_labels[it.kind] }}</span><a href="{{ it.url }}">{{ it.title }}</a><span class="reason">{{ it.reason }}</span></li>
+    {% endfor %}
+  </ul>
+  {% if card["items"]|length < 5 %}<p class="few">本期该词条来源较少（{{ card["items"]|length }} 条）。</p>{% endif %}
+  {% else %}
+  <p class="few">本期该词条来源较少（0 条）。</p>
+  {% endif %}
+</article>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,86 @@
+name: daily
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # UTC 00:00 = 北京 08:00（GitHub 高峰可能延迟 30–60 分钟）
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "生成日期 YYYY-MM-DD（留空 = 今天）"
+        required: false
+        default: ""
+      force:
+        description: "覆盖当日已有产物"
+        type: boolean
+        required: false
+        default: false
+
+concurrency:
+  group: daily
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  issues: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e . --no-deps
+
+      - name: Generate issue
+        env:
+          SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.date }}" ]; then ARGS="$ARGS --date ${{ inputs.date }}"; fi
+          if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
+          python -m openmind run $ARGS
+
+      - name: Commit and push
+        run: |
+          git config user.name "openmind-bot"
+          git config user.email "actions@github.com"
+          git add site/ state/ data/
+          if git diff --cached --quiet; then
+            echo "no changes (issue already exists); skip commit"
+          else
+            git commit -m "issue: $(date -u +%F) daily knowledge digest"
+            git push
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

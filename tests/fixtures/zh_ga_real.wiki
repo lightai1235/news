@@ -1,0 +1,36 @@
+{{noteTA
+|G1=Music
+|G2=Movie
+|1=zh-cn:通过; zh-tw:透過; zh-hk:通過;
+|2=zh-cn:我为喜剧狂; zh-tw:超級製作人; zh-hk:娛樂揸Fit人;
+|3=zh-cn:探险时光; zh-tw:探險活寶;
+|4=zh-cn:计算机信息;zh-hk:電腦資訊;zh-tw:電腦資訊;
+|5=zh-tw:資訊科技; zh-cn:信息技术;
+|6=zh-hans:巴哈姆特; zh-hant:巴哈姆特
+}}
+{{/header}}
+<templatestyles src="Wikipedia:优良条目/styles.css" />
+<div class="wp-ga-summary-recent">
+<!-- 警告：本頁中所有嵌入的頁面都會被機器人當作優良條目的分類列表。請勿嵌入非優良條目的分類列表。 -->
+{{Wikipedia:优良条目/分类/传播媒体}}
+{{Wikipedia:优良条目/分类/天气学}}
+{{Wikipedia:优良条目/分类/物理科学与工程学}}
+{{Wikipedia:优良条目/分类/生物学、医学与药学}}
+{{Wikipedia:优良条目/分类/计算机信息}}
+{{Wikipedia:优良条目/分类/文化与社会}}
+{{Wikipedia:优良条目/分类/地理}}
+{{Wikipedia:优良条目/分类/历史}}
+{{Wikipedia:优良条目/分类/社会科学}}
+{{Wikipedia:优良条目/分类/大众文化和人文学科}}
+{{Wikipedia:优良条目/分类/宗教、神话与神秘学}}
+{{Wikipedia:优良条目/分类/体育运动}}
+{{Wikipedia:优良条目/分类/交通}}
+{{Wikipedia:优良条目/分类/战争与军事}}
+{{Wikipedia:优良条目/分类/人文和社会学者}}
+{{Wikipedia:优良条目/分类/政治与军事人物}}
+{{Wikipedia:优良条目/分类/职业人物}}
+{{Wikipedia:优良条目/分类/团体和企业}}
+</div>
+{{meta|Wikipedia good articles}}
+<div style="font-size: 16pt; margin-left: auto; margin-right: auto; display: table;">'''[[#top|返回列表顶部]]'''</div>
+__NOTOC__

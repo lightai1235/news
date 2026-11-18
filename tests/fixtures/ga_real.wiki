@@ -1,0 +1,49 @@
+<noinclude>
+{{Wikipedia:Good article nominations/Tab header}}
+<div class="mw-collapsible mw-collapsed">
+{{Wikipedia:Good articles/Summary|shortcuts={{shortcut|WP:GA/ALL}}}}
+</div></noinclude><templatestyles src="Wikipedia:Good articles/styles.css"/>
+__NOTOC__
+__NOEDITSECTION__
+<div class="wp-ga-topic">
+==GA==
+<div class="wp-ga-topic-contents">
+===Contents===
+<!--Changes to the "Contents" section (including the section title) may impact the following bots:
+      * User:FACBot, User:GreenC bot, User:LivingBot
+    Please notify them of changes to the layout/style of this section.-->
+(Split between page 1 and [[Wikipedia:Good articles/all2#GA|page 2]] due to size)
+{{plainlist}}
+* [[#Agriculture, food and drink|Agriculture, food and drink]]
+* [[#Art and architecture|Art and architecture]]
+* [[#Engineering and technology|Engineering and technology]]
+* [[#Geography and places|Geography and places]]
+* [[#History|History]]
+* [[#Language and literature|Language and literature]]
+* [[#Mathematics|Mathematics]]
+* [[#Media and drama|Media and drama]]
+* [[#Music|Music]]
+* [[Wikipedia:Good articles/all2#Natural sciences|Natural sciences]]
+* [[Wikipedia:Good articles/all2#Philosophy and religion|Philosophy and religion]]
+* [[Wikipedia:Good articles/all2#Social sciences and society|Social sciences and society]]
+* [[Wikipedia:Good articles/all2#Sports and recreation|Sports and recreation]]
+* [[Wikipedia:Good articles/all2#Video games|Video games]]
+* [[Wikipedia:Good articles/all2#Warfare|Warfare]]
+{{endplainlist}}
+</div>
+</div>
+{{Wikipedia:Good articles/Agriculture, food and drink}}
+{{Wikipedia:Good articles/Art and architecture}}
+{{Wikipedia:Good articles/Engineering and technology}}
+{{Wikipedia:Good articles/Geography and places}}
+{{Wikipedia:Good articles/History}}
+{{Wikipedia:Good articles/Language and literature}}
+{{Wikipedia:Good articles/Mathematics}}
+{{Wikipedia:Good articles/Media and drama}}
+{{Wikipedia:Good articles/Music}}
+<noinclude>
+===Back===
+<div class="wp-ga-topic-back">[[#GA|back]]</div>
+===Continue===
+<div class="wp-ga-topic-back">[[Wikipedia:Good articles/all2#GA|continue]]</div>
+</noinclude>
