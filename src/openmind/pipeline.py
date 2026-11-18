@@ -36,7 +36,7 @@ from openmind.sources.wiki_links import WikiLinksSource
 from openmind.sources.x_search import XSearchSource
 from openmind.sources.youtube import YoutubeSource
 from openmind.state import State
-from openmind.wiki import ArticleInfo, fetch_aliases, fetch_article
+from openmind.wiki import ArticleInfo, fetch_aliases, fetch_article, fetch_fulltext
 
 log = logging.getLogger(__name__)
 
@@ -50,6 +50,28 @@ def project_root() -> Path:
 
 def fetch_zh_extract(zh_title: str) -> str:
     return fetch_article(zh_title, lang="zh").extract
+
+
+def fulltext_review(info: ArticleInfo, comp: Compliance) -> tuple[bool, str]:
+    """最终推出前的全文复核（2026-11-18 用户要求）：防标题干净、正文夹带私货。
+
+    只对本条调用（每日 ≤3 条 + 顶替重试，效率可控）。
+    原文全文 + 中文译文全文（若存在）都查；抓取失败降级为首段复核，不阻断出页。
+    """
+    text = fetch_fulltext(info.title, info.lang)
+    if not text:
+        text = info.extract
+        log.info("fulltext fetch empty for %s; fallback to intro extract", info.title)
+    ok, reason = comp.check_fulltext(info.title, text)
+    if not ok:
+        return ok, reason
+    if info.zh_title:
+        zh_text = fetch_fulltext(info.zh_title, "zh")
+        if zh_text:
+            ok, reason = comp.check_fulltext(info.zh_title, zh_text)
+            if not ok:
+                return ok, f"中文版{reason}"
+    return True, ""
 
 
 def _dump(path: Path, obj) -> None:
@@ -169,6 +191,11 @@ def run(
             if not ok:
                 log.info("entry swapped out %s: %s", e.canonical_title, reason)
                 continue
+            # 全文复核：只对即将推出的条目做（标题/类目干净也可能正文夹带）
+            ok, reason = fulltext_review(info, comp)
+            if not ok:
+                log.info("entry swapped out %s: %s", e.canonical_title, reason)
+                continue
             info.aliases = fetch_aliases(e.canonical_title, e.lang)
             mains.append(e)
             infos.append(info)
@@ -190,6 +217,11 @@ def run(
                     continue
                 info = fetch_article(e.canonical_title, e.lang)
                 ok, reason = comp.check_entry(e.canonical_title, info.categories)
+                if not ok:
+                    log.info("entry swapped out %s: %s", e.canonical_title, reason)
+                    used_titles.add(e.canonical_title)
+                    continue
+                ok, reason = fulltext_review(info, comp)
                 if not ok:
                     log.info("entry swapped out %s: %s", e.canonical_title, reason)
                     used_titles.add(e.canonical_title)

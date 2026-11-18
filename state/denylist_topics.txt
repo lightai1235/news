@@ -1,3 +1,141 @@
-# 话题级 denylist（SPEC §5.5 第 1 层）
-# 每行一个关键词或条目名，命中即从候选池排除；# 开头为注释。
-# 本文件由用户自行维护（涉政话题词条不在此预置）。
+台独
+台湾独立
+台湾独立运动
+台湾共和国
+台湾建国
+台湾正名运动
+台湾民族独立
+台湾分离主义
+台湾分裂主义
+台湾独立公投
+台湾独立建国
+台岛独立
+台岛分裂
+一中一台
+两个中国
+港独
+香港独立
+香港独立运动
+香港建国
+香港分离主义
+香港分裂主义
+香港独立公投
+香港民族独立
+藏独
+西藏独立
+西藏独立运动
+西藏建国
+西藏分离主义
+西藏分裂主义
+藏人独立
+雪域独立
+疆独
+新疆独立
+新疆独立运动
+新疆建国
+新疆分离主义
+新疆分裂主义
+东突独立
+东突厥斯坦独立
+东突厥斯坦建国
+东突厥斯坦独立运动
+维吾尔独立
+维吾尔斯坦独立
+新疆独立公投
+内蒙古独立
+蒙古族独立运动
+南蒙古独立
+南蒙古独立运动
+内蒙古分离主义
+中国分裂
+中国分裂主义
+中国领土分裂
+中国领土分割
+分裂中国
+分裂国家
+中国解体
+中国瓦解
+中国分裂运动
+中国独立运动
+Taiwan independence
+Taiwan independence movement
+Taiwanese independence
+Taiwan separatism
+Taiwan secession
+Republic of Taiwan
+Taiwan independence referendum
+Taiwan nation building
+Two Chinas
+Hong Kong independence
+Hong Kong independence movement
+Hong Kong separatism
+Hong Kong secession
+Hong Kong independence referendum
+Tibet independence
+Tibetan independence
+Tibet independence movement
+Tibet separatism
+Tibet secession
+Free Tibet movement
+Xinjiang independence
+East Turkestan independence
+East Turkestan independence movement
+East Turkestan separatism
+Uyghur independence
+Uyghur separatism
+Xinjiang separatism
+Inner Mongolia independence
+Southern Mongolia independence
+Mongolian separatism
+China separatism
+China secession
+China fragmentation
+Break up China
+Split China
+Disintegration of China
+Separatist movement in China
+反华运动
+反华宣传
+反华政治运动
+反华组织
+反华势力
+反华示威
+反华抗议
+反华行动
+反华联盟
+反华活动
+反华政治宣传
+反中国运动
+Anti-China movement
+Anti-China campaign
+Anti-China propaganda
+Anti-China political movement
+Anti-China organization
+Anti-China protest
+Anti-China coalition
+Anti-China activism
+鼓吹中国分裂
+鼓吹国家分裂
+鼓吹民族分裂
+煽动民族分裂
+煽动国家分裂
+煽动领土分裂
+支持中国分裂
+支持台湾独立
+支持香港独立
+支持西藏独立
+支持新疆独立
+支持东突独立
+支持南蒙古独立
+中国分裂主义宣传
+中国分离主义宣传
+Advocate China separatism
+Advocate China secession
+Support Taiwan independence
+Support Hong Kong independence
+Support Tibet independence
+Support Xinjiang independence
+Support East Turkestan independence
+Support Southern Mongolia independence
+Separatist propaganda in China
+Secessionist propaganda in China

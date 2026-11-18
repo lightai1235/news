@@ -83,6 +83,7 @@ def fakes(monkeypatch):
 
     monkeypatch.setattr(pipeline, "fetch_article", fake_fetch_article)
     monkeypatch.setattr(pipeline, "fetch_aliases", fake_fetch_aliases)
+    monkeypatch.setattr(pipeline, "fetch_fulltext", lambda title, lang="en": f"{title} full body.")
     monkeypatch.setattr(pipeline, "fetch_zh_extract", fake_fetch_zh)
     monkeypatch.setattr(pipeline, "discover", fake_discover)
     monkeypatch.setattr(pipeline, "score_candidates", fake_score)
@@ -262,3 +263,68 @@ class TestCli:
         assert main(["run"]) == 0
         today = date.today().isoformat()
         assert (root / "site" / "archive" / f"{today}.html").exists()
+
+
+class TestFulltextReview:
+    """2026-11-18 用户要求：最终 3 条推出前全文复核，防正文夹带；只查要推出的条目。"""
+
+    def test_buried_keyword_swaps_entry(self, root, fakes, monkeypatch):
+        (root / "state" / "denylist_topics.txt").write_text("BadKeyword\n", encoding="utf-8")
+
+        def fulltext(title, lang="en"):
+            if title == "Topic 0":
+                return "正常开头……中间夹带 badkeyword 内容……正常结尾。"
+            return f"{title} clean body."
+
+        monkeypatch.setattr(pipeline, "fetch_fulltext", fulltext)
+        code = pipeline.run(root, "2026-11-19")
+        assert code == 0
+        served = json.loads((root / "state" / "served.json").read_text(encoding="utf-8"))
+        titles = [e["title"] for e in served["served"]]
+        assert "Topic 0" not in titles  # 标题干净但正文夹带 → 被顶替
+        assert len(titles) == 3
+
+    def test_zh_version_also_reviewed(self, root, fakes, monkeypatch):
+        (root / "state" / "denylist_topics.txt").write_text("违禁词\n", encoding="utf-8")
+
+        def fulltext(title, lang="en"):
+            if lang == "zh" and title == "中文Topic 0":
+                return "中文版正文夹带违禁词。"
+            return f"{title} clean body."
+
+        monkeypatch.setattr(pipeline, "fetch_fulltext", fulltext)
+        code = pipeline.run(root, "2026-11-19")
+        assert code == 0
+        served = json.loads((root / "state" / "served.json").read_text(encoding="utf-8"))
+        titles = [e["title"] for e in served["served"]]
+        assert "Topic 0" not in titles  # 英文干净、中文夹带也要拦
+
+    def test_fulltext_fetch_failure_falls_back_to_intro(self, root, fakes, monkeypatch):
+        (root / "state" / "denylist_topics.txt").write_text("BadKeyword\n", encoding="utf-8")
+        monkeypatch.setattr(pipeline, "fetch_fulltext", lambda t, lang="en": "")
+
+        def article_with_intro(title, lang="en"):
+            info = ArticleInfo(
+                title=title, lang=lang, extract=f"{title} is a topic.", zh_title=f"中文{title}"
+            )
+            if title == "Topic 0":
+                info.extract = "首段即含 badkeyword。"
+            return info
+
+        monkeypatch.setattr(pipeline, "fetch_article", article_with_intro)
+        code = pipeline.run(root, "2026-11-19")
+        assert code == 0  # 抓取失败降级首段复核，不阻断出页
+        served = json.loads((root / "state" / "served.json").read_text(encoding="utf-8"))
+        assert "Topic 0" not in [e["title"] for e in served["served"]]
+
+    def test_only_final_entries_reviewed(self, root, fakes, monkeypatch):
+        calls = []
+
+        def fulltext(title, lang="en"):
+            calls.append((title, lang))
+            return f"{title} clean."
+
+        monkeypatch.setattr(pipeline, "fetch_fulltext", fulltext)
+        pipeline.run(root, "2026-11-19")
+        en_calls = [t for t, lang in calls if lang == "en"]
+        assert len(en_calls) == 3  # 只对最终 3 条做英文全文复核，无多余调用

@@ -104,13 +104,14 @@ class Compliance:
         )
 
     def check_entry(self, title: str, categories: list[str]) -> tuple[bool, str]:
+        low_title = title.lower()
         for topic in self.topic_denylist:
-            if topic and topic in title:
+            # 不区分大小写（2026-11-18）：用户维护的词条大小写不定；中文无大小写不受影响
+            if topic and topic.lower() in low_title:
                 reason = f"话题级 denylist 命中: {topic}"
                 log.info("entry rejected %r: %s", title, reason)
                 return False, reason
 
-        low_title = title.lower()
         if "(disambiguation)" in low_title or low_title.startswith("list of "):
             reason = "列表页/消歧义页排除"
             log.info("entry rejected %r: %s", title, reason)
@@ -136,6 +137,19 @@ class Compliance:
                         reason = f"虚构 category 命中: {c}"
                         log.info("entry rejected %r: %s", title, reason)
                         return False, reason
+        return True, ""
+
+    def check_fulltext(self, title: str, text: str) -> tuple[bool, str]:
+        """全文复核（2026-11-18 用户要求）：标题干净但正文夹带 denylist 关键词也要拦。
+
+        只对最终要推出的 3 条调用（效率约束）；不区分大小写，与话题级一致。
+        """
+        haystack = f"{title}\n{text}".lower()
+        for topic in self.topic_denylist:
+            if topic and topic.lower() in haystack:
+                reason = f"全文复核 denylist 命中: {topic}"
+                log.info("entry fulltext rejected %r: %s", title, reason)
+                return False, reason
         return True, ""
 
     def check_url(self, url: str) -> tuple[bool, str]:
