@@ -122,6 +122,45 @@ class TestTopicDenylistMechanism:
         assert not ok
         assert "topic" in reason.lower() or "话题" in reason
 
+    def test_topic_match_case_insensitive(self, tmp_path):
+        # 2026-11-18：用户维护的词条大小写不定，匹配须不区分大小写（中英文均然）
+        (tmp_path / "denylist_topics.txt").write_text(
+            "SomeTopic\n中文词条\n", encoding="utf-8"
+        )
+        (tmp_path / "denylist_domains.txt").write_text("", encoding="utf-8")
+        (tmp_path / "allowlist_domains.txt").write_text("", encoding="utf-8")
+        c = Compliance.load(tmp_path)
+        assert c.check_entry("SOMETOPIC in history", categories=[])[0] is False
+        assert c.check_entry("sometopic", categories=[])[0] is False
+        assert c.check_entry("SomeTopic", categories=[])[0] is False
+        assert c.check_entry(" unrelated title ", categories=[])[0] is True
+        # 中文无大小写，行为不变
+        assert c.check_entry("关于中文词条的研究", categories=[])[0] is False
+
+    def test_fulltext_review_catches_buried_keyword(self, tmp_path):
+        # 2026-11-18：标题干净但正文夹带关键词 → 全文复核必须命中
+        (tmp_path / "denylist_topics.txt").write_text("BadKeyword\n违禁词\n", encoding="utf-8")
+        (tmp_path / "denylist_domains.txt").write_text("", encoding="utf-8")
+        (tmp_path / "allowlist_domains.txt").write_text("", encoding="utf-8")
+        c = Compliance.load(tmp_path)
+        ok, reason = c.check_fulltext(
+            " Innocent Title ",
+            "第一段正常内容……中间夹带 badkeyword 宣传……后续正常。",
+        )
+        assert not ok
+        assert "全文" in reason
+        ok, reason = c.check_fulltext("正常标题", "正文含违禁词。")
+        assert not ok
+        ok, _ = c.check_fulltext("正常标题", "完全正常的正文内容。")
+        assert ok
+
+    def test_fulltext_review_empty_denylist_passes(self, tmp_path):
+        (tmp_path / "denylist_topics.txt").write_text("# 空\n", encoding="utf-8")
+        (tmp_path / "denylist_domains.txt").write_text("", encoding="utf-8")
+        (tmp_path / "allowlist_domains.txt").write_text("", encoding="utf-8")
+        c = Compliance.load(tmp_path)
+        assert c.check_fulltext("任意标题", "任意正文" * 1000)[0] is True
+
     def test_comment_and_blank_lines_ignored(self, tmp_path):
         (tmp_path / "denylist_topics.txt").write_text("# 注释\n\n  \n词条A\n", encoding="utf-8")
         (tmp_path / "denylist_domains.txt").write_text("", encoding="utf-8")

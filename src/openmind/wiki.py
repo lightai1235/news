@@ -84,6 +84,25 @@ def fetch_article(title: str, lang: str = "en") -> ArticleInfo:
     return info
 
 
+def fetch_fulltext(title: str, lang: str = "en") -> str:
+    """整篇正文纯文本（无 exintro），供最终 3 条的全文合规复核。失败返回空串。"""
+    try:
+        data = _get(
+            {
+                "action": "query",
+                "titles": title,
+                "prop": "extracts",
+                "explaintext": 1,
+                "redirects": 1,
+            },
+            lang,
+        )
+        return _first_page(data).get("extract", "")
+    except Exception as exc:
+        log.warning("wiki fetch_fulltext %s failed: %s", title, exc)
+        return ""
+
+
 def fetch_external_links(title: str, lang: str = "en") -> list[str]:
     try:
         data = _get(
