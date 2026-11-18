@@ -6,7 +6,7 @@ import logging
 from urllib.parse import urlparse
 
 from openmind.sources.base import Candidate, Query
-from openmind.wiki import fetch_external_links, fetch_reference_links
+from openmind.wiki import fetch_external_links, fetch_reference_links, unwrap_archive
 
 log = logging.getLogger(__name__)
 
@@ -53,6 +53,8 @@ class WikiLinksSource:
             for url, origin in [(u, "wiki_externallink") for u in links] + [
                 (u, "wiki_reference") for u in refs
             ]:
+                # 外链章节也可能含 Wayback 存档：归一后与参考文献/彼此去重（C 方案）
+                url = unwrap_archive(url)
                 if url in seen:
                     continue
                 seen.add(url)

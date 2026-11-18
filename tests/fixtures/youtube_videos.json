@@ -1,0 +1,14 @@
+{
+  "items": [
+    {
+      "id": "yt001",
+      "contentDetails": {"duration": "PT42M10S"},
+      "statistics": {"viewCount": "150000"}
+    },
+    {
+      "id": "yt002",
+      "contentDetails": {"duration": "PT1H5M30S"},
+      "statistics": {"viewCount": "8200"}
+    }
+  ]
+}

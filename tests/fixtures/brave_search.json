@@ -1,0 +1,17 @@
+{
+  "web": {
+    "results": [
+      {
+        "title": "Bioacoustics research hub",
+        "url": "https://www.example.org/brave-hub",
+        "description": "Research hub for animal sound studies.",
+        "page_age": "2023-09-01T00:00:00"
+      },
+      {
+        "title": "arXiv bioacoustics dataset",
+        "url": "https://arxiv.org/abs/2301.12345",
+        "description": "A new annotated dataset."
+      }
+    ]
+  }
+}

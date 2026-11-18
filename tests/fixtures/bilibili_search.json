@@ -1,0 +1,25 @@
+{
+  "code": 0,
+  "data": {
+    "result": [
+      {
+        "bvid": "BV1bili001",
+        "title": "生物声学入门：动物声音研究",
+        "description": "系统介绍生物声学的研究方法。",
+        "duration": "42:10",
+        "pubdate": 1700000000,
+        "author": "科普频道",
+        "play": 120000
+      },
+      {
+        "bvid": "BV1bili002",
+        "title": "野外录音设备指南",
+        "description": "麦克风与录音机选购。",
+        "duration": "1:05:30",
+        "pubdate": 1650000000,
+        "author": "自然音频",
+        "play": 8000
+      }
+    ]
+  }
+}

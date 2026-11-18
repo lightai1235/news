@@ -88,5 +88,26 @@ class TestWikiLinksSource:
         urls = [c.url for c in cands]
         assert len(urls) == len(set(urls)) == 3
 
+    def test_extlinks_archive_unwrapped_and_deduped(self, monkeypatch):
+        # C 方案对外链章节同样生效：存档还原为原始 URL，与参考文献重复只留一条
+        from openmind.sources import wiki_links
+
+        monkeypatch.setattr(
+            wiki_links,
+            "fetch_external_links",
+            lambda t, lang="en": [
+                "https://web.archive.org/web/2020/https://example.org/a",
+                "https://example.org/b",
+            ],
+        )
+        monkeypatch.setattr(
+            wiki_links,
+            "fetch_reference_links",
+            lambda t, lang="en": ["https://example.org/a"],
+        )
+        cands = WikiLinksSource().search(Query(title="X", lang="en"))
+        urls = [c.url for c in cands]
+        assert urls == ["https://example.org/a", "https://example.org/b"]
+
     def test_needs_no_key(self):
         assert WikiLinksSource.needs_key is False

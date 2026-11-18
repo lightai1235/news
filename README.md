@@ -6,7 +6,7 @@
 每天从维基百科 Good/Featured articles 与中文典范/优良条目中随机抽 **3 个非虚构词条**（领域互异、180 天不重复），汇聚全网信源评出每词条 **Top-10 高质量内容**，渲染成纯静态站点发布到 GitHub Pages。
 
 - 无推荐算法、无「猜你喜欢」、无埋点、无无限滚动——每天只有 3 张卡片，看完即止。
-- 零密钥可跑（维基外链信源）；配 API key 后信源矩阵逐步增强。
+- 零密钥可跑：维基外链/参考文献 + arXiv/PubMed + HN/Reddit + DuckDuckGo + bilibili/搜狗微信 + X（DDG 降级）；配 API key 后追加 Serper/Brave/Tavily 搜索与 YouTube 视频元数据。
 - git 即数据库：`served.json` 与 `site/` 在同一次 commit 内更新，失败天然回滚。
 
 ## 在线地址

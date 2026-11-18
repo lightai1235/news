@@ -23,8 +23,18 @@ from openmind.queries import build_queries
 from openmind.render import Issue, render_issue
 from openmind.sample import sample
 from openmind.score import score_candidates
+from openmind.sources.arxiv import ArxivSource
 from openmind.sources.base import Candidate, Query
+from openmind.sources.bilibili import BilibiliSource
+from openmind.sources.duckduckgo import DuckDuckGoSource
+from openmind.sources.hn import HnSource
+from openmind.sources.pubmed import PubmedSource
+from openmind.sources.reddit import RedditSource
+from openmind.sources.search_apis import BraveSource, SerperSource, TavilySource
+from openmind.sources.sogou_weixin import SogouWeixinSource
 from openmind.sources.wiki_links import WikiLinksSource
+from openmind.sources.x_search import XSearchSource
+from openmind.sources.youtube import YoutubeSource
 from openmind.state import State
 from openmind.wiki import ArticleInfo, fetch_aliases, fetch_article
 
@@ -52,7 +62,29 @@ def _load(path: Path):
 
 
 def _sources() -> list:
-    return [WikiLinksSource()]
+    """全量 13 个 adapter（SPEC §5.4）：L1 底座在前，key 源缺 key 由 discover 记 skipped。
+
+    页脚「n/12」按逻辑信源计数：Serper/Brave/Tavily 三选一算 1 个搜索信源。
+    """
+    return [
+        WikiLinksSource(),
+        ArxivSource(),
+        PubmedSource(),
+        HnSource(),
+        RedditSource(),
+        DuckDuckGoSource(),
+        SerperSource(),
+        BraveSource(),
+        TavilySource(),
+        YoutubeSource(),
+        BilibiliSource(),
+        SogouWeixinSource(),
+        XSearchSource(),
+    ]
+
+
+# Serper/Brave/Tavily 互为备选，页脚健康度按 1 个逻辑信源计
+_SOURCE_ALIASES = {"brave": "serper", "tavily": "serper"}
 
 
 def _available_keys() -> set[str]:
@@ -185,7 +217,12 @@ def run(
     # ---- queries ----
     queries_path = data_dir / "queries.json"
     if force or not queries_path.exists():
-        _dump(queries_path, [asdict(build_queries(i)) for i in infos])
+        qs = []
+        for e, i in zip(mains, infos, strict=True):
+            q = build_queries(i)
+            q.domain = e.domain  # 供信源按领域裁剪（PubMed 仅医学/生物等）
+            qs.append(q)
+        _dump(queries_path, [asdict(q) for q in qs])
     queries = [Query(**d) for d in _load(queries_path)]
     if stop_at == "queries":
         return 0
@@ -233,14 +270,14 @@ def run(
         return 0
 
     # ---- render ----
-    sources_ok = len({h["source"] for h in health if h.get("ok")})
+    sources_ok = len({_SOURCE_ALIASES.get(h["source"], h["source"]) for h in health if h.get("ok")})
     issue = Issue(
         date=date_iso,
         briefs=briefs,
         items=items,
         generated_at=datetime.now(UTC).isoformat(timespec="seconds"),
         sources_ok=sources_ok,
-        sources_total=len(_sources()) + 11,  # V1 规划 12 信源，T9–T15 逐个接线
+        sources_total=12,  # 逻辑信源数（搜索 API 三选一算 1）
         base_url="https://lightai1235.github.io/news",
     )
     render_issue(issue, site_dir)

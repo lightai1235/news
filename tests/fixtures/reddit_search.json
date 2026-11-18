@@ -1,0 +1,35 @@
+{
+  "kind": "Listing",
+  "data": {
+    "children": [
+      {
+        "kind": "t3",
+        "data": {
+          "title": "Bioacoustics field recording setup guide",
+          "url": "https://www.example.org/reddit-guide",
+          "permalink": "/r/bioacoustics/comments/abc123/guide/",
+          "selftext": "",
+          "score": 150,
+          "num_comments": 42,
+          "created_utc": 1700000000,
+          "subreddit": "bioacoustics",
+          "is_self": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "title": "Discussion: cheap hydrophones for beginners",
+          "url": "https://www.reddit.com/r/bioacoustics/comments/def456/hydrophones/",
+          "permalink": "/r/bioacoustics/comments/def456/hydrophones/",
+          "selftext": "What hydrophone do you recommend under $200?",
+          "score": 60,
+          "num_comments": 25,
+          "created_utc": 1650000000,
+          "subreddit": "bioacoustics",
+          "is_self": true
+        }
+      }
+    ]
+  }
+}

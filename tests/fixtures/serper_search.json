@@ -1,0 +1,15 @@
+{
+  "organic": [
+    {
+      "title": "Bioacoustics - an overview",
+      "link": "https://www.example.org/serper-overview",
+      "snippet": "Comprehensive overview of bioacoustics research.",
+      "date": "2024-01-15"
+    },
+    {
+      "title": "Bioacoustics lecture video",
+      "link": "https://www.youtube.com/watch?v=serper1",
+      "snippet": "University lecture recording."
+    }
+  ]
+}

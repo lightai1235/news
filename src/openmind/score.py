@@ -74,6 +74,11 @@ def _depth(c: Candidate, text: str) -> float:
         if pages:
             return min(1.0, pages / 20)
         return 0.6
+    if c.source in ("sogou_weixin", "x_search"):
+        # 只索引不抓正文（SPEC §5.4）：以摘要长度为深度弱代理，
+        # 否则字数恒 0 → 非权威公众号/X 永远过不了 3.0 门槛
+        chars = len(c.snippet)
+        return min(0.6, chars / 500)
     words = len(text.split()) if text else 0
     return min(1.0, words / 2000)
 
@@ -124,7 +129,13 @@ def score_candidates(
 
     def fine(c: Candidate) -> Candidate | None:
         text = ""
-        if c.kind in ("article", "discussion", "wechat"):
+        if c.source == "sogou_weixin":
+            # SPEC §5.4：公众号只索引不抓正文（正文在微信内读），用摘要做相关度
+            text = c.snippet
+        elif c.source == "x_search":
+            # SPEC §5.4：X 只索引不抓正文（内容在 X 内读）
+            text = c.snippet
+        elif c.kind in ("article", "discussion", "wechat"):
             try:
                 text = fetch(c.url)
             except Exception as exc:
@@ -141,7 +152,12 @@ def score_candidates(
         if c.kind == "paper":
             parts.append("论文")
         elif c.kind == "video":
-            parts.append("视频")
+            minutes = float(c.meta.get("duration_min", 0) or 0)
+            parts.append(f"视频 · {minutes:.0f} 分钟" if minutes else "视频")
+        elif c.kind == "wechat":
+            parts.append("公众号")
+        elif c.kind == "discussion":
+            parts.append("讨论")
         if c.published:
             parts.append(c.published[:4])
         parts.append(f"相关度{_relevance(c, topic):.1f}")

@@ -1,0 +1,17 @@
+{
+  "results": [
+    {
+      "title": "Bioacoustics field guide",
+      "url": "https://www.example.org/tavily-guide",
+      "content": "Practical field guide for recording animal sounds.",
+      "published_date": "2024-05-01",
+      "score": 0.92
+    },
+    {
+      "title": "Bioacoustics on bilibili",
+      "url": "https://www.bilibili.com/video/BV1tavily",
+      "content": "Chinese video about bioacoustics.",
+      "score": 0.8
+    }
+  ]
+}

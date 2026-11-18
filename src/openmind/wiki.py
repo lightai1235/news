@@ -114,12 +114,47 @@ def fetch_external_links(title: str, lang: str = "en") -> list[str]:
 
 
 _EXT_URL_RE = re.compile(r"https?://[^\s\"'<>\\]+")
+# 只匹配 <ref ...>...</ref> 引用块；自闭合 <ref name=x />（复用引用）不含新 URL，天然跳过
+_REF_BLOCK_RE = re.compile(r"<ref\b[^>]*>(.*?)</ref>", re.DOTALL | re.IGNORECASE)
+# Wayback 存档前缀：https://web.archive.org/web/<时间戳>[修饰符]/<原始URL>
+_WAYBACK_RE = re.compile(
+    r"^https?://web\.archive\.org/web/\d+[a-z_]*/(https?://.+)$", re.IGNORECASE
+)
+# 维基家族与基建噪声域名：自链、坐标工具、XML 命名空间等，非内容信源
+_NOISE_HOSTS = (
+    "wikipedia.org",
+    "wikimedia.org",
+    "wikidata.org",
+    "wikiquote.org",
+    "wiktionary.org",
+    "wikisource.org",
+    "wikinews.org",
+    "wikibooks.org",
+    "wikiversity.org",
+    "wikivoyage.org",
+    "toolforge.org",
+    "wmflabs.org",
+    "w3.org",
+)
+
+
+def _is_noise_host(host: str) -> bool:
+    host = host.lower()
+    return any(host == h or host.endswith("." + h) for h in _NOISE_HOSTS)
+
+
+def unwrap_archive(url: str) -> str:
+    """Wayback 存档链接还原为原始 URL；非存档链接原样返回。"""
+    m = _WAYBACK_RE.match(url)
+    return m.group(1) if m else url
 
 
 def fetch_reference_links(title: str, lang: str = "en") -> list[str]:
-    """参考文献外链兜底：parse 渲染 HTML 中 extract 引用 URL。
+    """参考文献外链兜底：只解析渲染 HTML 的 <ref> 引用块（A 方案）。
 
     externallinks 只含「外部链接」章节；大量词条的权威来源在参考文献里。
+    整页正则扫描会混入信息框坐标、命名空间、导航等噪声（2026-11-18 修正），
+    因此只取 <ref> 块内 URL；Wayback 存档归一为原始 URL 去重（C 方案）。
     """
     try:
         data = _get({"action": "parse", "page": title, "prop": "text", "redirects": 1}, lang)
@@ -128,15 +163,15 @@ def fetch_reference_links(title: str, lang: str = "en") -> list[str]:
             html = html.get("*", "")
         urls: list[str] = []
         seen: set[str] = set()
-        for m in _EXT_URL_RE.finditer(html):
-            url = m.group(0).rstrip(".,;)")
-            host = urlparse(url).hostname or ""
-            # 排除维基自身与静态资源
-            if "wikipedia.org" in host or "wikimedia.org" in host or "wikiquote" in host:
-                continue
-            if url not in seen:
-                seen.add(url)
-                urls.append(url)
+        for block in _REF_BLOCK_RE.finditer(html):
+            for m in _EXT_URL_RE.finditer(block.group(1)):
+                url = unwrap_archive(m.group(0).rstrip(".,;)"))
+                host = urlparse(url).hostname or ""
+                if _is_noise_host(host):
+                    continue
+                if url not in seen:
+                    seen.add(url)
+                    urls.append(url)
         return urls[:100]
     except Exception as exc:
         log.warning("wiki fetch_reference_links %s failed: %s", title, exc)

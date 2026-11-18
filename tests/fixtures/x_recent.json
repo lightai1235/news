@@ -1,0 +1,24 @@
+{
+  "data": [
+    {
+      "id": "1700000000000000001",
+      "text": "New paper on bioacoustics monitoring just dropped, thread below.",
+      "created_at": "2024-02-01T10:00:00Z",
+      "author_id": "42",
+      "public_metrics": {"like_count": 120, "retweet_count": 30}
+    },
+    {
+      "id": "1700000000000000002",
+      "text": "Field recording trip: captured 3 hours of dawn chorus.",
+      "created_at": "2023-11-20T06:00:00Z",
+      "author_id": "43",
+      "public_metrics": {"like_count": 45, "retweet_count": 5}
+    }
+  ],
+  "includes": {
+    "users": [
+      {"id": "42", "username": "sci_researcher"},
+      {"id": "43", "username": "nature_audio"}
+    ]
+  }
+}
