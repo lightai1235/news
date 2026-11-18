@@ -141,10 +141,14 @@ def score_candidates(
             except Exception as exc:
                 log.info("fine-rank fetch failed %s: %s", c.url, exc)
                 return None
+        relevance = _relevance(c, topic)
+        if relevance <= 0.0:
+            # 零相关一票否决（2026-11-18）：权威域名加分不能救回完全无关内容
+            # （冒烟发现 HN 权威帖混进文学词条）。记入 rejected 供审计。
+            rejected.append({"url": c.url, "reason": "相关度为 0，与词条无关"})
+            return None
         authority = 1.0 if comp.is_authoritative(c.url) else 0.0
-        score = (
-            3.0 * authority + 2.0 * _depth(c, text) + 1.5 * _relevance(c, topic) + 1.0 * _recency(c)
-        )
+        score = 3.0 * authority + 2.0 * _depth(c, text) + 1.5 * relevance + 1.0 * _recency(c)
         c.score = round(score, 2)
         parts = []
         if authority:
@@ -160,7 +164,7 @@ def score_candidates(
             parts.append("讨论")
         if c.published:
             parts.append(c.published[:4])
-        parts.append(f"相关度{_relevance(c, topic):.1f}")
+        parts.append(f"相关度{relevance:.1f}")
         c.reason = " · ".join(parts)
         return c
 

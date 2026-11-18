@@ -60,3 +60,32 @@ class TestArxiv:
 
     def test_needs_no_key(self):
         assert ArxivSource.needs_key is False
+
+
+class TestRateLimit:
+    def test_limiter_acquired_before_request(self, monkeypatch):
+        from openmind.sources import arxiv
+
+        waits = []
+
+        class FakeLimiter:
+            def acquire(self):
+                waits.append(1)
+
+        monkeypatch.setattr(arxiv, "_LIMITER", FakeLimiter())
+        monkeypatch.setattr(
+            httpx,
+            "get",
+            lambda url, **k: httpx.Response(
+                200,
+                text=(FIX / "arxiv_atom.xml").read_text(encoding="utf-8"),
+                request=httpx.Request("GET", url),
+            ),
+        )
+        ArxivSource().search(Query(title="X", lang="en"))
+        assert waits == [1]
+
+    def test_interval_at_least_3s(self):
+        from openmind.sources.arxiv import _LIMITER
+
+        assert _LIMITER.min_interval >= 3.0
