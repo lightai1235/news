@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "id": {"videoId": "yt001"},
+      "snippet": {
+        "title": "Bioacoustics: The Science of Animal Sound",
+        "channelTitle": "Science Channel",
+        "description": "Full lecture on bioacoustics methods.",
+        "publishedAt": "2023-04-01T00:00:00Z"
+      }
+    },
+    {
+      "id": {"videoId": "yt002"},
+      "snippet": {
+        "title": "Field recording masterclass",
+        "channelTitle": "Nature Audio",
+        "description": "How to record animal sounds in the wild.",
+        "publishedAt": "2020-08-15T00:00:00Z"
+      }
+    }
+  ]
+}

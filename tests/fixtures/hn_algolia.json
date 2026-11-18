@@ -1,0 +1,23 @@
+{
+  "hits": [
+    {
+      "objectID": "30000001",
+      "title": "Bioacoustics: listening to animals with AI",
+      "url": "https://www.example.org/bioacoustics-ai",
+      "points": 210,
+      "num_comments": 87,
+      "created_at": "2024-03-01T12:00:00Z",
+      "story_text": null
+    },
+    {
+      "objectID": "30000002",
+      "title": "Ask HN: Best resources for bioacoustics?",
+      "url": null,
+      "points": 45,
+      "num_comments": 30,
+      "created_at": "2023-06-15T08:00:00Z",
+      "story_text": "I am looking for field recording guides."
+    }
+  ],
+  "nbHits": 2
+}

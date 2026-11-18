@@ -42,12 +42,16 @@ class Candidate:
 
 @dataclass
 class Query:
-    """一个词条的查询扩展结果（SPEC §5.3）：精确/概念/中文组 + 别名词表。"""
+    """一个词条的查询扩展结果（SPEC §5.3）：精确/概念/中文组 + 别名词表。
+
+    domain 供信源按领域裁剪调用（如 PubMed 仅医学/生物触发），由 pipeline 注入。
+    """
 
     title: str
     lang: str
     aliases: list[str] = field(default_factory=list)
     groups: dict[str, str] = field(default_factory=dict)
+    domain: str = ""
 
     def to_json(self) -> str:
         return json.dumps(asdict(self), ensure_ascii=False, sort_keys=True)

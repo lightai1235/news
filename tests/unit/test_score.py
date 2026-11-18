@@ -114,3 +114,62 @@ class TestScore:
         ]
         scored, _ = score_candidates(cs, "Bioacoustics", comp, fetch_text=fetch)
         assert all("dead" not in c.url for c in scored)
+
+
+class TestSourceBoundaries:
+    """SPEC §5.4：公众号与 X 只索引不抓正文；视频时长进 reason。"""
+
+    def test_wechat_not_fetched(self, comp):
+        calls = []
+
+        def fetch(u):
+            calls.append(u)
+            return ""
+
+        cs = [
+            cand(
+                "https://mp.weixin.qq.com/s/abc",
+                title="Bioacoustics 生物声学",
+                kind="wechat",
+                source="sogou_weixin",
+                snippet="生物声学 bioacoustics 研究综述 " * 100,
+            )
+        ]
+        scored, _ = score_candidates(cs, "Bioacoustics", comp, fetch_text=fetch)
+        assert calls == []  # 未抓正文
+        assert len(scored) == 1
+        assert "公众号" in scored[0].reason
+
+    def test_x_not_fetched(self, comp):
+        calls = []
+
+        def fetch(u):
+            calls.append(u)
+            return ""
+
+        cs = [
+            cand(
+                "https://x.com/u/status/1",
+                title="Bioacoustics thread",
+                kind="discussion",
+                source="x_search",
+                snippet="bioacoustics " * 300,
+            )
+        ]
+        scored, _ = score_candidates(cs, "Bioacoustics", comp, fetch_text=fetch)
+        assert calls == []
+        assert len(scored) == 1
+        assert "讨论" in scored[0].reason
+
+    def test_video_duration_in_reason(self, comp):
+        cs = [
+            cand(
+                "https://www.youtube.com/watch?v=x",
+                title="Bioacoustics documentary",
+                kind="video",
+                source="youtube",
+                meta={"duration_min": 42.2},
+            )
+        ]
+        scored, _ = score_candidates(cs, "Bioacoustics", comp, fetch_text=lambda u: "")
+        assert "42 分钟" in scored[0].reason

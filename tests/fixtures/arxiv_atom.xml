@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:arxiv="http://arxiv.org/schemas/atom">
+  <title>ArXiv Query: search_query=all:"Bioacoustics"</title>
+  <entry>
+    <id>http://arxiv.org/abs/2201.00001v1</id>
+    <updated>2022-01-01T00:00:00Z</updated>
+    <published>2022-01-01T00:00:00Z</published>
+    <title>A Survey of Bioacoustics Methods</title>
+    <summary>We review computational bioacoustics approaches for animal sound analysis.</summary>
+    <author><name>Alice Smith</name></author>
+    <arxiv:comment>25 pages, 8 figures</arxiv:comment>
+    <link href="http://arxiv.org/abs/2201.00001v1" rel="alternate" type="text/html"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/1905.00002v2</id>
+    <published>2019-05-01T00:00:00Z</published>
+    <title>Bioacoustics Signal Processing</title>
+    <summary>Classic signal processing pipeline for field recordings.</summary>
+    <link href="http://arxiv.org/abs/1905.00002v2" rel="alternate" type="text/html"/>
+  </entry>
+</feed>

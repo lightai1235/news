@@ -1,0 +1,19 @@
+{
+  "result": {
+    "uids": ["12345678", "23456789"],
+    "12345678": {
+      "uid": "12345678",
+      "title": "Ventricle regeneration in zebrafish.",
+      "pubdate": "2023 Jun",
+      "fulljournalname": "Nature Medicine",
+      "pages": "1123-1135"
+    },
+    "23456789": {
+      "uid": "23456789",
+      "title": "Cardiac ventricle imaging review.",
+      "pubdate": "2018",
+      "fulljournalname": "Circulation",
+      "pages": "e100-e112"
+    }
+  }
+}
