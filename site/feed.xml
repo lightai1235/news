@@ -7,16 +7,19 @@
   <language>zh-CN</language>
   <lastBuildDate>Wed, 18 Nov 2026 00:00:00 +0000</lastBuildDate>
   <item>
-    <title>2026-11-18 · Robinson Crusoe economy / Smythe&#39;s Megalith / KTVH-DT</title>
+    <title>2026-11-18 · 旋度 / 席博罗溪 / 克里斯·克拉夫特</title>
     <link>https://lightai1235.github.io/news/archive/2026-11-18.html</link>
     <guid isPermaLink="true">https://lightai1235.github.io/news/archive/2026-11-18.html</guid>
     <pubDate>Wed, 18 Nov 2026 00:00:00 +0000</pubDate>
-    <description>【Robinson Crusoe economy】A Robinson Crusoe economy is a simple framework used to study some fundamental issues in economics. It assumes an economy with one consumer, one producer and two goods. The title &#34;Robinson Crusoe&#34; is a reference to the 1719 novel of the same name authored by Daniel Defoe.
-As a thought experiment in economics, many international trade economists have found this simplified and idealized version of the story important due to its ability to simplify the complexities of the real world. The implicit assumption is that the study of a one agent economy will provide useful insights into the functioni……
-【Smythe&#39;s Megalith】Smythe&#39;s Megalith, also known as the Warren Farm Chamber, was a chambered long barrow near the village of Aylesford in the south-eastern English county of Kent. Probably constructed in the 4th millennium BCE, during Britain&#39;s Early Neolithic period, it was discovered in 1822, at which point it was dismantled. Built out of earth and at least five local sarsen megaliths, the long barrow consisted of a roughly rectangular earthen tumulus with a stone chamber in its eastern end. Human remains were deposited into this chamber.
-Archaeologists have established that the monument was built by pastora……
-【KTVH-DT】KTVH-DT (channel 12) is a television station in Helena, Montana, United States, affiliated with NBC. It is owned by the E. W. Scripps Company alongside CBS affiliate KXLH-LD (channel 9). The two stations share studios on West Lyndale Avenue in Helena; KTVH-DT&#39;s transmitter is located on Hogback Mountain. KTVH-DT operates low-power translator KTGF-LD (channel 50) in Great Falls, where Scripps also owns CBS affiliate KRTV.
-The only full-service commercial TV station serving Montana&#39;s capital city for most of its history, channel 12 came to air in 1958 as KXLJ-TV and struggled through a fight w……</description>
+    <description>【旋度】在向量分析中，旋度（英語：curl）是一个向量算子，表示在三维欧几里德空间中的向量场的无穷小量旋转。在向量场每个点上，点的旋度表示为一个向量，称为旋度向量。这个向量的特性（长度和方向）刻画了在这个点上的旋转。
+旋度的方向是旋转的轴，它由右手定则来确定，而旋度的大小是旋转的量。如果向量场表示一个移动的流形的流速，则旋度是这个流形的环量面密度。旋度为零的向量场叫做无旋向量场。旋度是向量的一种微分形式。微积分基本定理的对应形式是开尔文-斯托克斯定理，它将向量场旋度的曲面积分关联于这个向量场环绕边界曲线的曲线积分。
+对于旋度curl F还经常使用可替代的术语回转度（rotation或rotational）和可替代的符号rot F和∇ × F。前者特别用于很多欧洲国家，后者使用del（或称nabla）算子和叉积，更多用于其它国家。
+不同于梯度和散度，旋度不能简单的推广到其他维度；某些推广是可能的，但是只有在三维中，在几何上定义的向量场旋度还是向量场。这个现象类似于三维叉积，这个联系反应在旋度的符号∇ ×上。
+旋度的名称“curl”最初由詹姆斯·克拉克·麦克斯韦在1871年提出，但这个概念显然最初用于詹姆斯·麥古拉在1839年对光学场理论的构建中。
+【席博罗溪】
+【克里斯·克拉夫特】克里斯·哥倫布·克拉夫特（英語：Christopher Columbus Kraft Jr.，1924年2月28日—2019年7月22日）是美國航太和NASA的工程師，他在建立該機構的任務控制中心方面發揮了重要作用，並塑造了其体制和文化。
+1944年，從弗吉尼亞理工學院暨州立大學畢業後，克里斯·克拉夫特受僱於美國國家航空諮詢委員會（NACA，NASA的前身）。他在航空研究領域工作逾十多年，並於1958年加入了太空任務組，這是一個負責將人類首次送入太空的小團隊。克拉夫特被分配到飛行操作部門，成為美國宇航局的第一位飛行總監。他在美國第一次載人航天飛行、第一次載人軌道飛行和第一次太空行走期間值班。在阿波羅計劃開始時，他不再擔任飛行總監，以專注於管理和任務規劃。1972年，他接替羅伯特·吉爾魯斯 (Robert R. Gilruth) ，成為載人航天中心（即後來的約翰遜航天中心）主任，並一直擔任該職位直到1982年退休。
+後來，他為IBM和羅克韋爾國際等公司提供咨詢服務。1994年，他被任命為一專家小組之主席，以使NASA的太空梭計劃更具成本效益。及後，該小組發表了一份具爭議的報告（被稱為克拉夫特報告，Kraft Report），建議NASA的航天飛機業務應外包給私人承包商，同時還建議NASA縮減挑戰者號航天飛機災難後提出的旨在提高有關安全性的架構性變革。這份報告在哥倫比亞號航天飛機災……</description>
   </item>
 </channel>
 </rss>
