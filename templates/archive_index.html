@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}拓界 · 归档{% endblock %}
+{% block content %}
+<h2>归档</h2>
+{% for month in months %}
+<section class="archive-month">
+  <h2>{{ month.month }}</h2>
+  <ul>
+    {% for d in month.dates %}
+    <li><a href="{{ d }}.html">{{ d }}</a></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endfor %}
+{% endblock %}
