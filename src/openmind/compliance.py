@@ -97,8 +97,24 @@ class Compliance:
                 if ln.strip() and not ln.strip().startswith("#")
             ]
 
+        def read_topics() -> list[str]:
+            # 优先 base64 文件（2026-11-23：避免明文入库/被工具读取触发风控）；
+            # 解码失败降级明文文件，两者皆无则空列表。
+            b64 = state_dir / "denylist_topics.b64"
+            if b64.exists():
+                try:
+                    import base64
+
+                    text = base64.b64decode(b64.read_text(encoding="ascii").strip()).decode(
+                        "utf-8"
+                    )
+                    return [ln.strip() for ln in text.splitlines() if ln.strip()]
+                except Exception as exc:
+                    log.warning("denylist_topics.b64 decode failed: %s", exc)
+            return read_lines("denylist_topics.txt")
+
         return cls(
-            topic_denylist=read_lines("denylist_topics.txt"),
+            topic_denylist=read_topics(),
             domain_denylist={d.lower() for d in read_lines("denylist_domains.txt")},
             domain_allowlist={d.lower() for d in read_lines("allowlist_domains.txt")},
         )

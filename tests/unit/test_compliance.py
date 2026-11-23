@@ -168,3 +168,48 @@ class TestTopicDenylistMechanism:
         c = Compliance.load(tmp_path)
         assert c.check_entry("词条A", categories=[])[0] is False
         assert c.check_entry("词条B", categories=[])[0] is True
+
+
+class TestBase64Topics:
+    """2026-11-23：denylist_topics.b64 优先，解码后过滤；明文为降级路径。"""
+
+    def _setup(self, tmp_path):
+        (tmp_path / "denylist_domains.txt").write_text("", encoding="utf-8")
+        (tmp_path / "allowlist_domains.txt").write_text("", encoding="utf-8")
+
+    def test_b64_preferred_over_plaintext(self, tmp_path):
+        import base64
+
+        self._setup(tmp_path)
+        (tmp_path / "denylist_topics.b64").write_text(
+            base64.b64encode("SecretTopic\n禁词".encode()).decode("ascii"),
+            encoding="ascii",
+        )
+        (tmp_path / "denylist_topics.txt").write_text("OtherTopic\n", encoding="utf-8")
+        c = Compliance.load(tmp_path)
+        assert c.check_entry("about secrettopic", categories=[])[0] is False
+        assert c.check_entry("含禁词的标题", categories=[])[0] is False
+        assert c.check_entry("OtherTopic", categories=[])[0] is True  # 明文被 b64 覆盖
+
+    def test_b64_decode_failure_falls_back_to_plaintext(self, tmp_path):
+        self._setup(tmp_path)
+        (tmp_path / "denylist_topics.b64").write_text("!!!not-base64!!!", encoding="ascii")
+        (tmp_path / "denylist_topics.txt").write_text("FallbackTopic\n", encoding="utf-8")
+        c = Compliance.load(tmp_path)
+        assert c.check_entry("FallbackTopic", categories=[])[0] is False
+
+    def test_b64_fulltext_review_works(self, tmp_path):
+        import base64
+
+        self._setup(tmp_path)
+        (tmp_path / "denylist_topics.b64").write_text(
+            base64.b64encode(b"BuriedWord").decode("ascii"), encoding="ascii"
+        )
+        c = Compliance.load(tmp_path)
+        assert c.check_fulltext("干净标题", "正文夹带 buriedword 内容")[0] is False
+        assert c.check_fulltext("干净标题", "正常正文")[0] is True
+
+    def test_no_files_empty_denylist(self, tmp_path):
+        self._setup(tmp_path)
+        c = Compliance.load(tmp_path)
+        assert c.check_entry("任意词条", categories=[])[0] is True

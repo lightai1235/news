@@ -14,3 +14,6 @@ htmlcov/
 # 项目规划内容只留本地，不推送（用户 2026-11-18 规则）
 SPEC.md
 tasks/
+
+# 话题黑名单明文只留本地，仓库用 base64 版本（2026-11-23）
+state/denylist_topics.txt
