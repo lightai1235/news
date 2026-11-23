@@ -51,7 +51,26 @@ python -m http.server 8000 --directory site/
 
 ## 合规
 
-三层过滤：话题级 `state/denylist_topics.txt`（用户自维护）、条目级虚构排除（小说/影视/游戏作品）、来源级 `state/denylist_domains.txt` 一票否决 + `allowlist_domains.txt` 权威加分。所有判定输出理由日志。
+三层过滤：话题级 `state/denylist_topics.b64`（用户自维护，base64 编码）、条目级虚构排除（小说/影视/游戏作品）、来源级 `state/denylist_domains.txt` 一票否决 + `allowlist_domains.txt` 权威加分。所有判定输出理由日志。最终推出的 3 个词条在发布前还会做全文复核（原文 + 中文译文），命中黑名单自动换备用词条。
+
+### 维护话题黑名单
+
+黑名单以 base64 存储（每行一个关键词或条目名，匹配不区分大小写）。修改流程：
+
+```bash
+# 1. 解码现有名单到临时文件
+python -c "import base64,pathlib; pathlib.Path('topics.txt').write_bytes(base64.b64decode(pathlib.Path('state/denylist_topics.b64').read_text().strip()))"
+
+# 2. 编辑 topics.txt（每行一个词，# 开头为注释）
+
+# 3. 重新编码回去（注释与空行自动剔除）
+python -c "import base64,pathlib; lines=[l.strip() for l in pathlib.Path('topics.txt').read_text(encoding='utf-8').splitlines() if l.strip() and not l.strip().startswith('#')]; pathlib.Path('state/denylist_topics.b64').write_text(base64.b64encode('\n'.join(lines).encode('utf-8')).decode('ascii')+'\n', encoding='ascii')"
+
+# 4. 删除临时明文文件
+rm topics.txt
+```
+
+解码失败时程序会降级读取明文 `state/denylist_topics.txt`（若存在），两者皆无则话题过滤为空。
 
 ## 开发
 
